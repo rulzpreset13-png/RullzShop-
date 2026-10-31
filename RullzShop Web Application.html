@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RullzShop - Marketplace Produk Digital & Fisik</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        shopee: '#ee4d2d',
+                        shopeeDark: '#d73211',
+                        shopeeBg: '#f5f5f5'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f5;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ee4d2d;
+        }
+        .verified-badge {
+            color: #1DA1F2;
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- APP CONTAINER -->
+    <div id="app" class="w-full max-w-md mx-auto min-h-screen bg-white shadow-xl flex flex-col relative pb-20 sm:max-w-md">
+
+        <!-- ================= AUTH SECTION ================= -->
+        <div id="authSection" class="p-6 flex flex-col justify-center min-h-screen bg-gradient-to-br from-orange-500 to-shopee text-white z-50">
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-white text-shopee rounded-3xl shadow-lg mb-4 text-4xl font-extrabold">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </div>
+                <h1 class="text-3xl font-extrabold tracking-wide">RullzShop</h1>
+                <p class="text-orange-100 text-sm mt-1">Jual Beli Produk Digital & Fisik Terpercaya</p>
+            </div>
+
+            <!-- Login / Register Tabs -->
+            <div class="bg-white text-gray-800 rounded-2xl shadow-2xl p-6">
+                <div class="flex border-b border-gray-200 mb-6">
+                    <button id="tabLoginBtn" onclick="switchAuthTab('login')" class="w-1/2 py-2 font-bold text-shopee border-b-2 border-shopee transition-all">Masuk</button>
+                    <button id="tabRegisterBtn" onclick="switchAuthTab('register')" class="w-1/2 py-2 font-bold text-gray-400 hover:text-shopee transition-all">Daftar</button>
+                </div>
+
+                <!-- Form Login -->
+                <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Username / Nama Akun</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-user absolute left-3 top-3 text-gray-400"></i>
+                            <input type="text" id="loginUsername" required class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-shopee text-sm" placeholder="Masukkan username">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Kata Sandi</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-lock absolute left-3 top-3 text-gray-400"></i>
+                            <input type="password" id="loginPassword" required class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-shopee text-sm" placeholder="Masukkan password">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-shopee hover:bg-shopeeDark text-white font-bold rounded-xl shadow-md transition-all active:scale-95 text-sm">
+                        MASUK SEKARANG
+                    </button>
+                </form>
+
+                <!-- Form Register -->
+                <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-4 hidden">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Username Baru</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-user-plus absolute left-3 top-3 text-gray-400"></i>
+                            <input type="text" id="regUsername" required class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-shopee text-sm" placeholder="Buat username unik">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Nomor WhatsApp Reseller</label>
+                        <div class="relative">
+                            <i class="fa-brands fa-whatsapp absolute left-3 top-3 text-gray-400"></i>
+                            <input type="tel" id="regPhone" required class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-shopee text-sm" placeholder="Contoh: 08123456789">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Kata Sandi</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-key absolute left-3 top-3 text-gray-400"></i>
+                            <input type="password" id="regPassword" required class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-shopee text-sm" placeholder="Buat kata sandi">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-shopee hover:bg-shopeeDark text-white font-bold rounded-xl shadow-md transition-all active:scale-95 text-sm">
+                        BUAT AKUN BARU
+                    </button>
+                </form>
+
+                <div class="mt-4 text-center">
+                    <p class="text-xs text-gray-500">Khusus Admin? Login dengan akun Admin resmi.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MAIN APP SECTION ================= -->
+        <div id="mainSection" class="hidden flex-col flex-1 bg-shopeeBg">
+
+            <!-- Shopee Style Header Search Bar -->
+            <header class="sticky top-0 z-40 bg-shopee text-white p-3 shadow-md">
+                <div class="flex items-center gap-2 mb-2">
+                    <!-- Search Box -->
+                    <div class="flex-1 bg-white rounded-lg flex items-center px-3 py-1.5 text-gray-700 shadow-inner">
+                        <i class="fa-solid fa-magnifying-glass text-gray-400 text-sm mr-2"></i>
+                        <input type="text" id="searchInput" oninput="renderProducts()" placeholder="Cari produk digital atau fisik..." class="w-full bg-transparent text-sm focus:outline-none">
+                    </div>
+                    <!-- Upload Product Button -->
+                    <button onclick="openUploadModal()" class="bg-white/20 hover:bg-white/30 text-white p-2 rounded-lg text-sm flex items-center gap-1 active:scale-95 transition">
+                        <i class="fa-solid fa-plus-circle"></i>
+                        <span class="text-xs font-semibold hidden sm:inline">Jual</span>
+                    </button>
+                </div>
+
+                <!-- Category Filters -->
+                <div class="flex gap-2 overflow-x-auto text-xs py-1 no-scrollbar">
+                    <button onclick="filterCategory('all')" id="cat-all" class="bg-white text-shopee font-bold px-3 py-1 rounded-full whitespace-nowrap shadow-sm">Semua</button>
+                    <button onclick="filterCategory('Digital')" id="cat-Digital" class="bg-white/20 hover:bg-white text-white hover:text-shopee px-3 py-1 rounded-full whitespace-nowrap transition">🎮 Digital / Preset</button>
+                    <button onclick="filterCategory('Fisik')" id="cat-Fisik" class="bg-white/20 hover:bg-white text-white hover:text-shopee px-3 py-1 rounded-full whitespace-nowrap transition">📦 Produk Fisik</button>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main class="p-3 space-y-4 flex-1">
+
+                <!-- Promo Banner -->
+                <div class="bg-gradient-to-r from-orange-500 to-red-600 rounded-2xl p-4 text-white shadow-lg relative overflow-hidden">
+                    <div class="relative z-10">
+                        <span class="bg-yellow-400 text-black text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">Fitur Spesial</span>
+                        <h2 class="font-bold text-lg mt-1">Upgrade RullzShop Premium</h2>
+                        <p class="text-xs text-orange-100 mt-0.5">Jual Produk Tanpa Limit + Centang Biru Resmi & Gaji Naik 10%!</p>
+                        <button onclick="requestPremium()" class="mt-3 bg-white text-shopee hover:bg-gray-100 font-bold px-4 py-1.5 rounded-xl text-xs shadow-md active:scale-95 transition inline-flex items-center gap-1">
+                            <i class="fa-brands fa-whatsapp text-green-500 text-sm"></i> Langganan Sekarang
+                        </button>
+                    </div>
+                    <i class="fa-solid fa-crown absolute -right-4 -bottom-4 text-7xl text-white/10"></i>
+                </div>
+
+                <!-- User Profile & Stats Header -->
+                <div class="bg-white rounded-2xl p-3 shadow-sm border border-gray-100 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-shopee font-bold">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-1">
+                                <span id="displayUsername" class="font-bold text-sm text-gray-800">User</span>
+                                <span id="displayVerifiedBadge" class="hidden text-blue-500 text-xs" title="Terverifikasi Premium">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                </span>
+                            </div>
+                            <div class="flex items-center gap-2 text-xs text-gray-500">
+                                <span>Status: <strong id="displayStatus" class="text-gray-700">Gratis</strong></span>
+                                <span>•</span>
+                                <span>Sisa Limit Upload Today: <strong id="displayLimit" class="text-shopee">10</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Admin Panel Quick Link (Visible only to Admin) -->
+                    <button id="adminBtn" onclick="openAdminModal()" class="hidden bg-gray-900 text-yellow-400 hover:bg-black font-bold px-3 py-1.5 rounded-xl text-xs shadow active:scale-95 transition">
+                        <i class="fa-solid fa-user-shield"></i> Admin
+                    </button>
+                </div>
+
+                <!-- Product Grid -->
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-bold text-gray-800 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-store text-shopee"></i> Produk Terbaru
+                        </h3>
+                        <span id="productCount" class="text-xs text-gray-500">0 Produk</span>
+                    </div>
+
+                    <div id="productGrid" class="grid grid-cols-2 gap-3">
+                        <!-- Products will be injected here dynamically -->
+                    </div>
+
+                    <div id="emptyProduct" class="hidden text-center py-10">
+                        <i class="fa-solid fa-box-open text-4xl text-gray-300 mb-2"></i>
+                        <p class="text-sm text-gray-500">Belum ada produk yang dijual.</p>
+                        <p class="text-xs text-gray-400">Jadilah yang pertama mengunggah produk!</p>
+                    </div>
+                </div>
+
+            </main>
+
+            <!-- Bottom Navigation Bar -->
+            <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-gray-200 flex justify-around py-2 px-4 z-40">
+                <button onclick="switchTab('home')" class="flex flex-col items-center text-shopee">
+                    <i class="fa-solid fa-house text-lg"></i>
+                    <span class="text-[10px] font-semibold mt-0.5">Beranda</span>
+                </button>
+                <button onclick="openUploadModal()" class="flex flex-col items-center text-gray-400 hover:text-shopee">
+                    <i class="fa-solid fa-square-plus text-lg"></i>
+                    <span class="text-[10px] font-semibold mt-0.5">Jual Produk</span>
+                </button>
+                <button onclick="requestPremium()" class="flex flex-col items-center text-gray-400 hover:text-shopee">
+                    <i class="fa-solid fa-gem text-lg text-amber-500"></i>
+                    <span class="text-[10px] font-semibold mt-0.5">Premium</span>
+                </button>
+                <button onclick="handleLogout()" class="flex flex-col items-center text-gray-400 hover:text-red-500">
+                    <i class="fa-solid fa-right-from-bracket text-lg"></i>
+                    <span class="text-[10px] font-semibold mt-0.5">Keluar</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- ================= MODALS ================= -->
+
+        <!-- MODAL UPLOAD PRODUK -->
+        <div id="uploadModal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden">
+            <div class="bg-white w-full max-w-sm rounded-2xl p-5 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+                <button onclick="closeUploadModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+                <h3 class="font-bold text-gray-800 text-lg mb-1 flex items-center gap-2">
+                    <i class="fa-solid fa-cart-plus text-shopee"></i> Jual Produk Baru
+                </h3>
+                <p class="text-xs text-gray-500 mb-4">Isi detail produk digital atau fisik Anda.</p>
+
+                <form onsubmit="handleUploadProduct(event)" class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Produk</label>
+                        <input type="text" id="prodName" required placeholder="Contoh: Preset Lightroom Mobile VIP" class="w-full px-3 py-2 bg-gray-50 border rounded-xl text-xs focus:outline-none focus:border-shopee">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Harga Produk (Rp)</label>
+                        <input type="number" id="prodPrice" required placeholder="Contoh: 15000" class="w-full px-3 py-2 bg-gray-50 border rounded-xl text-xs focus:outline-none focus:border-shopee">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Kategori Produk</label>
+                        <select id="prodCategory" class="w-full px-3 py-2 bg-gray-50 border rounded-xl text-xs focus:outline-none focus:border-shopee">
+                            <option value="Digital">Digital / Preset / Akun</option>
+                            <option value="Fisik">Barang Fisik / Aksesoris</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Foto Produk (Dari Galeri / File)</label>
+                        <div class="flex flex-col gap-2">
+                            <input type="file" id="prodImageFile" accept="image/*" onchange="previewSelectedImage(event)" required class="w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-shopee hover:file:bg-orange-100 cursor-pointer">
+                            <div id="imagePreviewContainer" class="hidden relative w-full h-32 bg-gray-100 rounded-xl overflow-hidden border border-gray-200">
+                                <img id="imagePreview" src="" alt="Pratinjau Foto" class="w-full h-full object-cover">
+                                <span class="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-2 py-0.5 rounded">Pratinjau</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Deskripsi Singkat</label>
+                        <textarea id="prodDesc" rows="2" placeholder="Jelaskan keunggulan produk Anda..." class="w-full px-3 py-2 bg-gray-50 border rounded-xl text-xs focus:outline-none focus:border-shopee"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">No. WhatsApp Reseller / Penjual</label>
+                        <input type="tel" id="prodPhone" required placeholder="08123456789" class="w-full px-3 py-2 bg-gray-50 border rounded-xl text-xs focus:outline-none focus:border-shopee">
+                    </div>
+
+                    <button type="submit" class="w-full py-2.5 bg-shopee text-white font-bold rounded-xl text-xs shadow-md hover:bg-shopeeDark transition mt-2">
+                        UNGGAH PRODUK SEKARANG
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- MODAL ADMIN PANEL (RullzPreset ONLY) -->
+        <div id="adminModal" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 hidden">
+            <div class="bg-white w-full max-w-md rounded-2xl p-5 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+                <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+                <div class="flex items-center gap-2 mb-1">
+                    <i class="fa-solid fa-shield-halved text-2xl text-yellow-500"></i>
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-lg">Dashboard Admin Privat</h3>
+                        <p class="text-xs text-gray-500">Khusus RullzPreset (Kelola Pengguna & Gaji)</p>
+                    </div>
+                </div>
+
+                <div class="mt-4 space-y-4">
+
+                    <!-- Premium Notifications / Approvals -->
+                    <div class="bg-orange-50 border border-orange-200 p-3 rounded-xl">
+                        <h4 class="font-bold text-xs text-orange-800 mb-2 flex items-center justify-between">
+                            <span><i class="fa-solid fa-bell text-orange-500"></i> Permintaan Premium (Centang Biru)</span>
+                            <span id="premiumReqCount" class="bg-orange-500 text-white text-[10px] px-2 py-0.5 rounded-full">0</span>
+                        </h4>
+                        <div id="premiumReqList" class="space-y-2 max-h-36 overflow-y-auto pr-1">
+                            <!-- Injected requests -->
+                        </div>
+                    </div>
+
+                    <!-- User Management Section -->
+                    <div>
+                        <h4 class="font-bold text-xs text-gray-700 mb-2 flex items-center justify-between">
+                            <span><i class="fa-solid fa-users text-shopee"></i> Daftar Pengguna & Gaji</span>
+                            <span id="userCount" class="text-xs text-gray-400">0 User</span>
+                        </h4>
+
+                        <div id="userList" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+                            <!-- Injected user list -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL DETAIL PRODUK / BUY -->
+        <div id="detailModal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden">
+            <div class="bg-white w-full max-w-sm rounded-2xl p-4 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+                <button onclick="closeDetailModal()" class="absolute top-3 right-3 z-10 bg-black/40 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/60">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div id="detailContent">
+                    <!-- Dynamic Product Detail -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="fixed bottom-16 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow-xl transition-all duration-300 opacity-0 pointer-events-none z-50 flex items-center gap-2">
+            <i id="toastIcon" class="fa-solid fa-circle-info text-yellow-400"></i>
+            <span id="toastMsg">Pesan Notifikasi</span>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        // GLOBAL DATA STORAGE STRUCTURE
+        const APP_STORAGE_KEY_USERS = 'rullzshop_users_v2';
+        const APP_STORAGE_KEY_PRODUCTS = 'rullzshop_products_v2';
+        const APP_STORAGE_KEY_CURRENT_USER = 'rullzshop_current_user_v2';
+
+        // INITIALIZE GLOBAL DATA
+        let users = JSON.parse(localStorage.getItem(APP_STORAGE_KEY_USERS)) || [
+            {
+                username: 'RullzPreset',
+                password: 'jenab123',
+                phone: '085189022148',
+                isPremium: true,
+                premiumStatus: 'approved',
+                isBlocked: false,
+                balance: 1000000,
+                lastUploadDate: new Date().toISOString().split('T')[0],
+                todayUploads: 0
+            }
+        ];
+
+        let products = JSON.parse(localStorage.getItem(APP_STORAGE_KEY_PRODUCTS)) || [
+            {
+                id: 1,
+                title: 'Preset Lightroom Mobile VIP Moody Dark',
+                price: 15000,
+                category: 'Digital',
+                image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500&auto=format&fit=crop',
+                desc: 'Preset tone dark moody premium cocok untuk foto cinematic dan IG Feed.',
+                seller: 'RullzPreset',
+                phone: '085189022148',
+                isVerified: true,
+                date: new Date().toISOString().split('T')[0]
+            }
+        ];
+
+        let currentUser = JSON.parse(localStorage.getItem(APP_STORAGE_KEY_CURRENT_USER)) || null;
+        let activeCategory = 'all';
+        let selectedImageBase64 = '';
+
+        // Save Data Helper
+        function saveData() {
+            localStorage.setItem(APP_STORAGE_KEY_USERS, JSON.stringify(users));
+            localStorage.setItem(APP_STORAGE_KEY_PRODUCTS, JSON.stringify(products));
+            localStorage.setItem(APP_STORAGE_KEY_CURRENT_USER, JSON.stringify(currentUser));
+        }
+
+        // Initialize App on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            saveData();
+            checkAutoLogin();
+        });
+
+        // Function to preview image selected from gallery
+        function previewSelectedImage(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Check file size limit (max 5MB to optimize LocalStorage)
+                if (file.size > 5 * 1024 * 1024) {
+                    showToast('Ukuran foto terlalu besar! Maksimal 5MB.', 'error');
+                    e.target.value = '';
+                    document.getElementById('imagePreviewContainer').classList.add('hidden');
+                    selectedImageBase64 = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    selectedImageBase64 = event.target.result;
+                    const imgPreview = document.getElementById('imagePreview');
+                    imgPreview.src = selectedImageBase64;
+                    document.getElementById('imagePreviewContainer').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // AUTO LOGIN CHECK
+        function checkAutoLogin() {
+            if (currentUser) {
+                // Re-sync with master users array
+                const found = users.find(u => u.username.toLowerCase() === currentUser.username.toLowerCase());
+                if (found && !found.isBlocked) {
+                    currentUser = found;
+                    saveData();
+                    showMainApp();
+                    return;
+                } else if (found && found.isBlocked) {
+                    showToast('Akun Anda telah diblokir oleh Admin!', 'error');
+                    currentUser = null;
+                    saveData();
+                }
+            }
+            showAuthScreen();
+        }
+
+        function showAuthScreen() {
+            document.getElementById('authSection').classList.remove('hidden');
+            document.getElementById('mainSection').classList.add('hidden');
+            document.getElementById('mainSection').classList.remove('flex');
+        }
+
+        function showMainApp() {
+            document.getElementById('authSection').classList.add('hidden');
+            document.getElementById('mainSection').classList.remove('hidden');
+            document.getElementById('mainSection').classList.add('flex');
+
+            // Reset upload counter if new day
+            const today = new Date().toISOString().split('T')[0];
+            if (currentUser.lastUploadDate !== today) {
+                currentUser.todayUploads = 0;
+                currentUser.lastUploadDate = today;
+                updateUserInList(currentUser);
+            }
+
+            updateUI();
+            renderProducts();
+        }
+
+        function updateUI() {
+            document.getElementById('displayUsername').innerText = currentUser.username;
+            document.getElementById('displayStatus').innerText = currentUser.isPremium ? 'Premium (Unlimited)' : 'Gratis';
+            
+            // Limit text
+            if (currentUser.isPremium) {
+                document.getElementById('displayLimit').innerText = '∞ (Tanpa Limit)';
+            } else {
+                const remaining = Math.max(0, 10 - (currentUser.todayUploads || 0));
+                document.getElementById('displayLimit').innerText = `${remaining} Upload`;
+            }
+
+            // Verified Badge
+            const badge = document.getElementById('displayVerifiedBadge');
+            if (currentUser.isPremium) {
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+
+            // Admin button visibility
+            const adminBtn = document.getElementById('adminBtn');
+            if (currentUser.username === 'RullzPreset') {
+                adminBtn.classList.remove('hidden');
+            } else {
+                adminBtn.classList.add('hidden');
+            }
+        }
+
+        // AUTH TAB SWITCHING
+        function switchAuthTab(tab) {
+            const loginForm = document.getElementById('loginForm');
+            const regForm = document.getElementById('registerForm');
+            const tabLoginBtn = document.getElementById('tabLoginBtn');
+            const tabRegBtn = document.getElementById('tabRegisterBtn');
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                regForm.classList.add('hidden');
+                tabLoginBtn.className = "w-1/2 py-2 font-bold text-shopee border-b-2 border-shopee transition-all";
+                tabRegBtn.className = "w-1/2 py-2 font-bold text-gray-400 hover:text-shopee transition-all";
+            } else {
+                loginForm.classList.add('hidden');
+                regForm.classList.remove('hidden');
+                tabRegBtn.className = "w-1/2 py-2 font-bold text-shopee border-b-2 border-shopee transition-all";
+                tabLoginBtn.className = "w-1/2 py-2 font-bold text-gray-400 hover:text-shopee transition-all";
+            }
+        }
+
+        // REGISTER HANDLER
+        function handleRegister(e) {
+            e.preventDefault();
+            const username = document.getElementById('regUsername').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+            const password = document.getElementById('regPassword').value;
+
+            if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
+                showToast('Username sudah terdaftar! Gunakan username lain.', 'error');
+                return;
+            }
+
+            const newUser = {
+                username: username,
+                password: password,
+                phone: phone,
+                isPremium: false,
+                premiumStatus: 'none',
+                isBlocked: false,
+                balance: 0,
+                lastUploadDate: new Date().toISOString().split('T')[0],
+                todayUploads: 0
+            };
+
+            users.push(newUser);
+            currentUser = newUser;
+            saveData();
+
+            showToast('Pendaftaran Berhasil! Selamat datang.', 'success');
+            showMainApp();
+        }
+
+        // LOGIN HANDLER
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            // Admin Special Bypass check
+            if (username === 'RullzPreset' && password === 'jenab123') {
+                let adminUser = users.find(u => u.username === 'RullzPreset');
+                if (!adminUser) {
+                    adminUser = {
+                        username: 'RullzPreset',
+                        password: 'jenab123',
+                        phone: '085189022148',
+                        isPremium: true,
+                        premiumStatus: 'approved',
+                        isBlocked: false,
+                        balance: 1000000,
+                        lastUploadDate: new Date().toISOString().split('T')[0],
+                        todayUploads: 0
+                    };
+                    users.push(adminUser);
+                }
+                currentUser = adminUser;
+                saveData();
+                showToast('Selamat Datang Admin RullzPreset!', 'success');
+                showMainApp();
+                return;
+            }
+
+            const foundUser = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
+
+            if (!foundUser) {
+                showToast('Username atau Kata Sandi Salah!', 'error');
+                return;
+            }
+
+            if (foundUser.isBlocked) {
+                showToast('Akun Anda telah diblokir/kick oleh Admin!', 'error');
+                return;
+            }
+
+            currentUser = foundUser;
+            saveData();
+            showToast('Login Berhasil!', 'success');
+            showMainApp();
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            saveData();
+            showAuthScreen();
+            showToast('Anda telah keluar.', 'info');
+        }
+
+        // RENDER PRODUCTS
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            const empty = document.getElementById('emptyProduct');
+            const searchVal = document.getElementById('searchInput').value.toLowerCase();
+
+            grid.innerHTML = '';
+
+            let filtered = products.filter(p => {
+                const matchCategory = activeCategory === 'all' || p.category === activeCategory;
+                const matchSearch = p.title.toLowerCase().includes(searchVal) || p.seller.toLowerCase().includes(searchVal);
+                return matchCategory && matchSearch;
+            });
+
+            document.getElementById('productCount').innerText = `${filtered.length} Produk`;
+
+            if (filtered.length === 0) {
+                empty.classList.remove('hidden');
+                return;
+            } else {
+                empty.classList.add('hidden');
+            }
+
+            filtered.forEach(p => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col justify-between hover:shadow-md transition cursor-pointer";
+                card.onclick = () => openDetailModal(p.id);
+
+                card.innerHTML = `
+                    <div class="relative">
+                        <img src="${p.image}" onerror="this.src='https://placehold.co/400x300/e2e8f0/64748b?text=Gambar+Produk'" alt="${p.title}" class="w-full h-32 object-cover">
+                        <span class="absolute top-2 left-2 bg-black/60 text-white text-[9px] px-2 py-0.5 rounded-md backdrop-blur-sm">
+                            ${p.category}
+                        </span>
+                    </div>
+                    <div class="p-2.5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h4 class="font-semibold text-xs text-gray-800 line-clamp-2 leading-tight mb-1">${p.title}</h4>
+                            <p class="text-shopee font-bold text-sm">Rp ${parseInt(p.price).toLocaleString('id-ID')}</p>
+                        </div>
+                        <div class="mt-2 pt-2 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-500">
+                            <span class="flex items-center gap-1 font-medium truncate max-w-[100px]">
+                                <i class="fa-solid fa-store text-gray-400"></i> ${p.seller}
+                                ${p.isVerified ? '<i class="fa-solid fa-circle-check text-blue-500 text-[10px]" title="Reseller Resmi"></i>' : ''}
+                            </span>
+                            <span class="bg-orange-50 text-shopee text-[10px] font-bold px-1.5 py-0.5 rounded">Beli</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // FILTER CATEGORY
+        function filterCategory(cat) {
+            activeCategory = cat;
+            document.querySelectorAll('[id^="cat-"]').forEach(btn => {
+                btn.className = "bg-white/20 hover:bg-white text-white hover:text-shopee px-3 py-1 rounded-full whitespace-nowrap transition";
+            });
+            const activeBtn = document.getElementById(`cat-${cat}`);
+            if (activeBtn) {
+                activeBtn.className = "bg-white text-shopee font-bold px-3 py-1 rounded-full whitespace-nowrap shadow-sm";
+            }
+            renderProducts();
+        }
+
+        // UPLOAD PRODUCT LOGIC
+        function openUploadModal() {
+            const today = new Date().toISOString().split('T')[0];
+            if (currentUser.lastUploadDate !== today) {
+                currentUser.todayUploads = 0;
+                currentUser.lastUploadDate = today;
+                updateUserInList(currentUser);
+            }
+
+            // Check Upload Limit
+            if (!currentUser.isPremium && currentUser.todayUploads >= 10) {
+                showToast('Batas limit 10 upload harian tercapai! Harap tunggu besok atau langganan Premium.', 'error');
+                return;
+            }
+
+            // Pre-fill phone if available
+            if (currentUser.phone) {
+                document.getElementById('prodPhone').value = currentUser.phone;
+            }
+
+            document.getElementById('uploadModal').classList.remove('hidden');
+        }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').classList.add('hidden');
+            selectedImageBase64 = '';
+            document.getElementById('imagePreviewContainer').classList.add('hidden');
+            document.getElementById('prodImageFile').value = '';
+        }
+
+        function handleUploadProduct(e) {
+            e.preventDefault();
+
+            if (!selectedImageBase64) {
+                showToast('Harap pilih foto produk dari galeri!', 'error');
+                return;
+            }
+
+            const title = document.getElementById('prodName').value.trim();
+            const price = parseInt(document.getElementById('prodPrice').value);
+            const category = document.getElementById('prodCategory').value;
+            const desc = document.getElementById('prodDesc').value.trim();
+            const phone = document.getElementById('prodPhone').value.trim();
+
+            const newProduct = {
+                id: Date.now(),
+                title: title,
+                price: price,
+                category: category,
+                image: selectedImageBase64,
+                desc: desc || 'Tidak ada deskripsi tambahan.',
+                seller: currentUser.username,
+                phone: phone,
+                isVerified: currentUser.isPremium || false,
+                date: new Date().toISOString().split('T')[0]
+            };
+
+            products.unshift(newProduct);
+            
+            // Increment Upload Limit Count
+            currentUser.todayUploads = (currentUser.todayUploads || 0) + 1;
+            updateUserInList(currentUser);
+            saveData();
+
+            closeUploadModal();
+            updateUI();
+            renderProducts();
+            showToast('Produk Berhasil Diunggah dari Galeri!', 'success');
+
+            // Reset Form
+            document.getElementById('prodName').value = '';
+            document.getElementById('prodPrice').value = '';
+            document.getElementById('prodDesc').value = '';
+            document.getElementById('prodImageFile').value = '';
+            selectedImageBase64 = '';
+        }
+
+        // DETAIL & BUY PRODUCT
+        function openDetailModal(prodId) {
+            const prod = products.find(p => p.id === prodId);
+            if (!prod) return;
+
+            const detailContent = document.getElementById('detailContent');
+            const cleanPhone = prod.phone.replace(/[^0-9]/g, '');
+            const waText = encodeURIComponent(`Halo kak, saya mau beli produk "${prod.title}" seharga Rp ${prod.price.toLocaleString('id-ID')} yang dijual di RullzShop.`);
+            const waLink = `https://wa.me/${cleanPhone}?text=${waText}`;
+
+            detailContent.innerHTML = `
+                <img src="${prod.image}" onerror="this.src='https://placehold.co/400x300/e2e8f0/64748b?text=Gambar+Produk'" class="w-full h-48 object-cover rounded-xl mb-3">
+                <span class="bg-orange-100 text-shopee text-[10px] font-bold px-2 py-0.5 rounded-full">${prod.category}</span>
+                <h3 class="font-bold text-base text-gray-800 mt-1">${prod.title}</h3>
+                <p class="text-shopee text-lg font-black my-1">Rp ${prod.price.toLocaleString('id-ID')}</p>
+                
+                <div class="bg-gray-50 p-2.5 rounded-xl border border-gray-100 my-3">
+                    <p class="text-xs text-gray-600 leading-relaxed">${prod.desc}</p>
+                </div>
+
+                <div class="flex items-center justify-between text-xs text-gray-600 border-t border-b py-2 mb-4">
+                    <span class="flex items-center gap-1 font-semibold">
+                        <i class="fa-solid fa-user-tag text-shopee"></i> Penjual: ${prod.seller}
+                        ${prod.isVerified ? '<i class="fa-solid fa-circle-check text-blue-500" title="Reseller Premium"></i>' : ''}
+                    </span>
+                    <span class="text-gray-400"><i class="fa-solid fa-phone text-xs"></i> ${prod.phone}</span>
+                </div>
+
+                <a href="${waLink}" target="_blank" class="w-full py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-md transition">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Hubungi Penjual / Beli
+                </a>
+            `;
+
+            document.getElementById('detailModal').classList.remove('hidden');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+        }
+
+        // REQUEST PREMIUM
+        function requestPremium() {
+            // Set user status to pending
+            currentUser.premiumStatus = 'pending';
+            updateUserInList(currentUser);
+            saveData();
+
+            const waPremiumUrl = "https://wa.me/6285189022148?text=Hallo%20kak%20@RullzOfficial%20saya%20mau%20pesan%20aplikasi%20Premium%20%F0%9F%99%8F%E2%98%BA%EF%B8%8F";
+            showToast('Mengalihkan ke WhatsApp Admin RullzOfficial...', 'info');
+            
+            setTimeout(() => {
+                window.open(waPremiumUrl, '_blank');
+            }, 1000);
+        }
+
+        // ADMIN PANEL FUNCTIONS (PRIVAT FOR RullzPreset)
+        function openAdminModal() {
+            if (currentUser.username !== 'RullzPreset') {
+                showToast('Akses Ditolak! Hanya khusus Admin RullzPreset.', 'error');
+                return;
+            }
+
+            renderAdminPanel();
+            document.getElementById('adminModal').classList.remove('hidden');
+        }
+
+        function closeAdminModal() {
+            document.getElementById('adminModal').classList.add('hidden');
+        }
+
+        function renderAdminPanel() {
+            // Render Premium Requests
+            const pendingUsers = users.filter(u => u.premiumStatus === 'pending');
+            const reqList = document.getElementById('premiumReqList');
+            document.getElementById('premiumReqCount').innerText = pendingUsers.length;
+
+            reqList.innerHTML = '';
+            if (pendingUsers.length === 0) {
+                reqList.innerHTML = `<p class="text-xs text-gray-500 italic">Tidak ada notifikasi permintaan premium saat ini.</p>`;
+            } else {
+                pendingUsers.forEach(u => {
+                    const item = document.createElement('div');
+                    item.className = "bg-white p-2 rounded-lg border flex items-center justify-between text-xs";
+                    item.innerHTML = `
+                        <div>
+                            <span class="font-bold text-gray-800">${u.username}</span>
+                            <span class="text-[10px] text-gray-500 block">WA: ${u.phone}</span>
+                        </div>
+                        <div class="flex gap-1">
+                            <button onclick="approvePremium('${u.username}')" class="bg-green-500 text-white px-2 py-1 rounded text-[10px] font-bold hover:bg-green-600">Setuju</button>
+                            <button onclick="rejectPremium('${u.username}')" class="bg-red-500 text-white px-2 py-1 rounded text-[10px] font-bold hover:bg-red-600">Tolak</button>
+                        </div>
+                    `;
+                    reqList.appendChild(item);
+                });
+            }
+
+            // Render All Users List
+            const userList = document.getElementById('userList');
+            document.getElementById('userCount').innerText = `${users.length} User`;
+            userList.innerHTML = '';
+
+            users.forEach(u => {
+                if (u.username === 'RullzPreset') return; // Skip admin self edit
+
+                const card = document.createElement('div');
+                card.className = "bg-gray-50 p-2.5 rounded-xl border border-gray-200 text-xs space-y-2";
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="flex items-center gap-1 font-bold text-gray-800">
+                                ${u.username}
+                                ${u.isPremium ? '<i class="fa-solid fa-circle-check text-blue-500" title="Premium"></i>' : ''}
+                                ${u.isBlocked ? '<span class="bg-red-100 text-red-600 text-[9px] px-1.5 py-0.5 rounded">DIBLOKIR</span>' : ''}
+                            </div>
+                            <div class="text-[10px] text-gray-500">
+                                Pass: <strong class="text-gray-700">${u.password}</strong> | WA: ${u.phone}
+                            </div>
+                        </div>
+                        <span class="font-bold text-green-600 text-[11px]">Rp ${(u.balance || 0).toLocaleString('id-ID')}</span>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-1 border-t border-gray-200 text-[10px]">
+                        <div class="flex gap-1">
+                            <button onclick="paySalary('${u.username}')" class="bg-blue-600 text-white px-2 py-1 rounded font-bold hover:bg-blue-700">
+                                <i class="fa-solid fa-money-bill-wave"></i> Gaji
+                            </button>
+                            <button onclick="toggleUserBlock('${u.username}')" class="${u.isBlocked ? 'bg-gray-600' : 'bg-red-600'} text-white px-2 py-1 rounded font-bold hover:opacity-90">
+                                ${u.isBlocked ? 'Unblock' : 'Kick / Block'}
+                            </button>
+                        </div>
+                        <span class="text-gray-400">${u.isPremium ? 'Status: Premium' : 'Status: Free'}</span>
+                    </div>
+                `;
+                userList.appendChild(card);
+            });
+        }
+
+        function approvePremium(username) {
+            const target = users.find(u => u.username === username);
+            if (target) {
+                target.isPremium = true;
+                target.premiumStatus = 'approved';
+
+                // Update products seller badge
+                products.forEach(p => {
+                    if (p.seller === username) {
+                        p.isVerified = true;
+                    }
+                });
+
+                saveData();
+                renderAdminPanel();
+                renderProducts();
+                showToast(`Akun ${username} disetujui jadi Premium!`, 'success');
+            }
+        }
+
+        function rejectPremium(username) {
+            const target = users.find(u => u.username === username);
+            if (target) {
+                target.premiumStatus = 'none';
+                saveData();
+                renderAdminPanel();
+                showToast(`Pengajuan premium ${username} ditolak.`, 'info');
+            }
+        }
+
+        function paySalary(username) {
+            const target = users.find(u => u.username === username);
+            if (!target) return;
+
+            let salaryInput = prompt(`Masukkan nominal gaji untuk ${target.username}:`, "100000");
+            if (!salaryInput) return;
+
+            let baseSalary = parseInt(salaryInput);
+            if (isNaN(baseSalary) || baseSalary <= 0) {
+                showToast('Nominal gaji tidak valid!', 'error');
+                return;
+            }
+
+            // If premium user, add 10% bonus automatically
+            let finalSalary = baseSalary;
+            if (target.isPremium) {
+                finalSalary = Math.round(baseSalary * 1.10);
+                showToast(`Bonus Premium 10% diterapkan! total: Rp ${finalSalary.toLocaleString('id-ID')}`, 'success');
+            }
+
+            target.balance = (target.balance || 0) + finalSalary;
+            saveData();
+            renderAdminPanel();
+            showToast(`Gaji sebesar Rp ${finalSalary.toLocaleString('id-ID')} dikirim ke ${target.username}!`, 'success');
+        }
+
+        function toggleUserBlock(username) {
+            const target = users.find(u => u.username === username);
+            if (target) {
+                target.isBlocked = !target.isBlocked;
+                saveData();
+                renderAdminPanel();
+                showToast(`Status pengguna ${username} diperbarui!`, 'info');
+            }
+        }
+
+        function updateUserInList(updatedUser) {
+            const idx = users.findIndex(u => u.username === updatedUser.username);
+            if (idx !== -1) {
+                users[idx] = updatedUser;
+                saveData();
+            }
+        }
+
+        // NAVIGATION SWITCHER
+        function switchTab(tab) {
+            if (tab === 'home') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // TOAST UTILITY
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const msgSpan = document.getElementById('toastMsg');
+            const icon = document.getElementById('toastIcon');
+
+            msgSpan.innerText = message;
+
+            if (type === 'error') {
+                icon.className = "fa-solid fa-circle-xmark text-red-400";
+            } else if (type === 'success') {
+                icon.className = "fa-solid fa-circle-check text-green-400";
+            } else {
+                icon.className = "fa-solid fa-circle-info text-yellow-400";
+            }
+
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'pointer-events-none');
+                toast.classList.remove('opacity-100');
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
